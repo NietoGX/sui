@@ -99,6 +99,32 @@ const MyComponent = () => {
 }
 ```
 
+You can use `queryString`in order to notify to the test
+
+`queryString` can be used for getting the experiment's variation via SSR instead of using the queryParam `?suipde_experimentName`. For forcing a variation in a user we have to go to optimizely and put our optimizelyID into the experiment's whitelist.
+For getting the optimizelyID we can use this command into the browser's console:
+`analytics.user().anonymousId()`
+
+```js
+import {useRouter} from '@s-ui/react-router'
+import {useFeature} from '@s-ui/pde'
+
+const EXPERIMENT_NAME = 'experimentX'
+
+const MyComponent = () => {
+  const router = useRouter()
+  const {location} = router
+  
+  const {variation} = useExperiment({
+    experimentName: EXPERIMENT_NAME,
+    queryString: location.search
+  })
+}
+
+```
+
+
+
 **Special cases for useExperiment `Experiment Viewed` track**
 
 Given useExperiment sends `Experiment Viewed` on being executed, some facts could happen:
